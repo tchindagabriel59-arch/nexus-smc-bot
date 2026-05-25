@@ -265,8 +265,12 @@ async def run_bot():
 
             # ── Mise à jour du prix ──
             if data.get("msg_type") == "tick":
-                tick = data["tick"]
-                price = tick["quote"]
+                tick = data.get("tick", {})
+                if not tick:
+                    continue
+                price = tick.get("quote", 0)
+                if not price:
+                    continue
                 tick_count += 1
 
                 now = datetime.now()
